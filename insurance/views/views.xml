@@ -1,0 +1,148 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="insurance.policy_action_window">
+      <field name="name">Insurance Policies</field>
+      <field name="res_model">insurance.policy</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+   <record model="ir.actions.act_window" id="insurance.employee_policy_action_window">
+      <field name="name">Employee Insurance Policies</field>
+      <field name="res_model">insurance.employeepolicy</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+      <record model="ir.ui.view" id="insurance.view_employee_form_inherit">
+      <field name="name">Employee</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='birthday']" position="after">
+                <field name="age" groups="hr.group_hr_manager"/>
+                <field name="EligibilityNotes_401k" attrs="{'required' : [('age', '>=', 55)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='gender']" position="replace"/>
+                
+            
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="insurance.policy_list">
+      <field name="name">Policies</field>
+      <field name="model">insurance.policy</field>
+      <field name="arch" type="xml">
+        <tree>
+          
+          <field name="name"/>
+          <field name="responsible_id"/>
+          <field name="plan_type_id"/>
+          <field name="plan_duration"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="insurance.employee_policy_list">
+      <field name="name">Employee Insurance Polices</field>
+      <field name="model">insurance.employeepolicy</field>
+      <field name="arch" type="xml">
+        <tree>
+          
+          <field name="employee_id"/>
+          <field name="policy_id"/>
+          <field name="effective_date"/>
+          <field name="policy_responsible"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="insurance.employee_policy_form">
+      <field name="name">Employee Insurance Policy</field>
+      <field name="model">insurance.employeepolicy</field>
+      <field name="arch" type="xml">
+        <form>
+         <sheet>
+          <div class="oe_title">
+        <h1>
+            <field name="policy_id"/>
+        </h1>
+    </div>
+
+         <group>
+          <group>
+            
+            <field name="employee_id"/>
+            
+          </group>
+          <group string="Policy Information">
+            <field name="effective_date"  />
+            <field name="policy_responsible"/>
+          </group>
+
+
+          <group string="Policy Review">
+            <field name="plan_review_required"/>
+          <field name="plan_review_date" attrs="{'invisible': [('plan_review_required', '=', False)]}"/>
+          </group>
+
+
+          <notebook colspan="4">
+          <page string="Notes" >
+          <group>
+          
+            <field name="notes" nolabel="1" placeholder="e.g. Put Insurance Notes here"/> 
+            </group>
+          </page>
+          <page string="Provider Information" >
+          <group>
+          
+            <field name="provider_id" /> 
+            <field name="provider_notes" /> 
+            </group>
+          </page>
+          </notebook>
+      </group>
+       </sheet>
+        </form>
+      </field>
+    </record>
+<record model="ir.ui.view" id="insurance.plan_type_form">
+      <field name="name">Plan Type</field>
+      <field name="model">insurance.plan_type</field>
+      <field name="arch" type="xml">
+        <form>
+         <group>
+         <field name="name" /> 
+            <field name="plan_duration" /> 
+            <field name="responsible_id" /> 
+            <field name="notes" /> 
+         </group>
+        </form>
+      </field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Insurance" id="insurance.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Insurance Policies" id="insurance.policy_menu" parent="insurance.menu_root"/>
+     
+
+    <!-- actions -->
+
+    <menuitem name="View Policies" id="insurance.menu_policy_list" parent="insurance.policy_menu"
+              action="insurance.policy_action_window"/>
+
+     <menuitem name="Employee Insurance Policies" id="insurance.menu_employee_policy_list" parent="insurance.policy_menu"
+              action="insurance.employee_policy_action_window"/>
+  
+
+  </data>
+</odoo>
