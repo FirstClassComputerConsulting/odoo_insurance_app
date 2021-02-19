@@ -66,6 +66,11 @@
       <field name="model">insurance.employeepolicy</field>
       <field name="arch" type="xml">
         <form>
+            <header>
+            <button name="action_terminate_policy" type="object" class="+btn-primary" string="Terminate Policy" attrs="{'invisible': [('plan_terminated', '=', True)]}"/>
+            <button name="action_reinstate_policy" type="object" string="Reinstate Policy" attrs="{'invisible': [('plan_terminated', '=', False)]}"/>
+            <button name="%(insurance.policy_action_window)d" type="action" string="Policies"/>
+            </header>
          <sheet>
           <div class="oe_title">
         <h1>
@@ -82,6 +87,9 @@
           <group string="Policy Information">
             <field name="effective_date"  />
             <field name="policy_responsible"/>
+            <field name="plan_terminated"/>
+            <button name="action_terminate_policy" type="object" string="Terminate Policy" attrs="{'invisible': [('plan_terminated', '=', True)]}"/>
+            <field name="plan_terminated_date" attrs="{'invisible': [('plan_terminated', '=', False)]}"/>
           </group>
 
 

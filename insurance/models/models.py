@@ -33,10 +33,29 @@ class insurance_employeepolicy(models.Model):
     copay_amt = fields.Float("CoPay Amt")
     policy_responsible = fields.Many2one('hr.employee',related="policy_id.responsible_id") 
     effective_date = fields.Date()
+    plan_terminated = fields.Boolean("Plan terminated",readonly=True)
+    plan_terminated_date = fields.Date("Plan Terminated On",readonly=True)
     plan_review_required = fields.Boolean('Plan Review Required')
     plan_review_date = fields.Date('Plan Review Date')
     notes = fields.Text()
 
+    def action_terminate_policy(self):
+        print("Terminate Policy")
+        for record in self:
+            record.plan_terminated = True
+            record.plan_terminated_date = fields.Date.today()
+        
+        # Return an action to fire it off
+        #action = self.env.ref('insurance.policy_action_window').read()[0]
+        #return action
+
+    def action_reinstate_policy(self):
+        print("Reinstate Policy")
+        for record in self:
+            record.plan_terminated = False
+            record.plan_terminated_date = None
+
+        
 class insurance_employee(models.Model):
     _inherit = 'hr.employee'
 

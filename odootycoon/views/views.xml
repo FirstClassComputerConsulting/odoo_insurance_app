@@ -1,0 +1,136 @@
+<odoo>
+  <data>
+
+
+     <record model="ir.ui.view" id="odootycoon.respartnerform">
+      <field name="name">Odoo Tycoon Customer</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <notebook position="inside">
+          <page string="Odoo Tycoon">
+          <group>
+               <field name="unlockcost"/>
+                <field name="unlocked" attrs="{'invisible': [('unlocked', '=', False)]}"/>
+               <button name="unlockcustomer" string="Unlock Customer" type="object"
+                   attrs="{'invisible': [('unlocked', '=', True)]}"/>
+          </group>
+
+          </page>
+        </notebook>
+
+      </field>
+    </record>
+    <record model="ir.ui.view" id="odootycoon.producttemplateform">
+      <field name="name">Odoo Tycoon Product</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+        <notebook position="inside">
+          <page string="Odoo Tycoon">
+          <group>
+               <field name="unlockcost"/>
+                <field name="unlocked" attrs="{'invisible': [('unlocked', '=', False)]}"/>
+               <button name="unlockproduct" string="Unlock Product" type="object"
+                   attrs="{'invisible': [('unlocked', '=', True)]}"/>
+          </group>
+
+          </page>
+        </notebook>
+
+      </field>
+    </record>
+
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="odootycoon.gamemanagerlist">
+      <field name="name">Odoo Tycoon Game Manager List</field>
+      <field name="model">odootycoon.gamemanager</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="cash"/>
+          <field name="day"/>
+        </tree>
+      </field>
+    </record>
+    <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="odootycoon.gamemanagerform">
+      <field name="name">Odoo Tycoon Game Manager Form</field>
+      <field name="model">odootycoon.gamemanager</field>
+      <field name="arch" type="xml">
+        <form>
+          <header> 
+          <button name="checktime" string="Set Time" type="object"/>
+           <button name="killthread" string="Kill Thread" type="object"/>
+            <button name="nextday" string="Next Day" type="object"/>
+             <button name="skip5days" string="Skip 5 Days" type="object"/>
+            <button name="skip30days" string="Skip 30 Days" type="object"/>
+            <button name="resetgame" string="Reset Game" type="object"/>
+          </header>
+          <group>
+            <field name="name"/>
+            <field name="cash"/>
+            <field name="day"/>
+          </group>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="odootycoon.action_gamemanager">
+      <field name="name">Odoo Tycoon Game Manager</field>
+      <field name="res_model">odootycoon.gamemanager</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odootycoon.action_products">
+      <field name="name">Odoo Tycoon Products</field>
+      <field name="res_model">product.template</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="odootycoon.action_customers">
+      <field name="name">Odoo Tycoon Customers</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="odootycoon.action_server">
+      <field name="name">odootycoon server</field>
+      <field name="model_id" ref="model_odootycoon_odootycoon"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Odoo Tycoon" id="odootycoon.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Game" id="odootycoon.menu_1" parent="odootycoon.menu_root"/>
+
+
+    <!-- actions -->
+
+    <menuitem name="Game Manager" id="odootycoon.menu_1_gamemanager" parent="odootycoon.menu_1"
+              action="odootycoon.action_gamemanager"/>
+    <menuitem name="Products" id="odootycoon.menu_1_products" parent="odootycoon.menu_1"
+              action="odootycoon.action_products"/>
+    <menuitem name="Customers" id="odootycoon.menu_1_respartner" parent="odootycoon.menu_1"
+              action="odootycoon.action_customers"/>
+
+  </data>
+</odoo>
